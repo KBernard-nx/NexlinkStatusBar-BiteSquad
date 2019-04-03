@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.nexlink.statusbar"
+    android:sharedUserId="com.nexlink"
+    android:versionCode="20140127"
+    android:versionName="20140127" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATIONS"/> <!-- System permission needed for API < 18 -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"/>
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
+    <uses-permission android:name="android.permission.STATUS_BAR_SERVICE"/>
+    <uses-permission android:name="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+
+    <application
+        android:allowBackup="true"
+        android:name=".App"
+        android:icon="@drawable/ic_launcher"
+        android:label="Nexlink Status Bar"
+        android:theme="@style/Theme.AppCompat"
+        android:launchMode="singleTask" >
+                
+        <service
+            android:name=".MainService"
+            android:label="Nexlink Status Bar">
+        </service>
+        <service
+            android:enabled="false"
+            android:name=".NotifServNew"
+            android:label="Nexlink Status Bar Notification Service"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter> 
+        </service>
+        <service
+            android:enabled="false"
+            android:name=".NotifServOld"
+            android:label="Nexlink Status Bar Notification Service">
+        </service>
+        <service
+            android:enabled="false"
+            android:name=".NotifServOldAcc"
+            android:label="Nexlink Status Bar Notification Service"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <meta-data
+    android:name="android.accessibilityservice"
+    android:resource="@xml/accessibility_service_config" />
+            <intent-filter>
+                 <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
+        <activity
+            android:label="Nexlink Status Bar"
+            android:name=".HomeActivity"
+            android:theme="@android:style/Theme.NoDisplay" >
+             <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".HomeDummy"
+            android:theme="@android:style/Theme.NoDisplay"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity> 
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Status Bar"
+            android:launchMode="singleInstance" 
+            android:exported="true">
+                        <intent-filter>
+                <action android:name="com.nexlink.action.LAUNCH_MDM_SETTINGS" />
+                <category android:name="com.nexlink.category.MDM_SETTINGS" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".PackageSelectActivity"
+            android:label="Select Packages" />
+        <receiver android:name=".GlobalPrefsReceiver" >
+            <intent-filter>
+                <action android:name="com.nexlink.GLOBAL_PREFS_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <activity android:name=".wifi.activity.WifiAccessActivity"
+            android:label="Wifi"
+            android:launchMode="singleInstance"
+            ></activity>
+    </application>
+</manifest>
